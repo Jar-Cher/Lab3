@@ -13,27 +13,14 @@ class Activity1 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_1)
 
-        val button = findViewById<Button>(R.id.button)
-        val button3 = findViewById<Button>(R.id.button3)
-
         button.setOnClickListener() {
             startActivity(Intent(applicationContext, Activity2::class.java))
         }
 
         button3.setOnClickListener() {
             startActivity(Intent(applicationContext, ActivityAbout::class.java))
-        }
-
-        Nav.setNavigationItemSelectedListener {
-            Log.d("Minor", "suces")
-            if (it.itemId == R.id.button3)
-        {
-            Log.d("Major", "success")
-            startActivity(Intent(this, ActivityAbout::class.java))
             Drawer.closeDrawer(GravityCompat.START, true)
         }
-
-            true }
     }
 
 }
