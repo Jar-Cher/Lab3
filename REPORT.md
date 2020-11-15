@@ -422,5 +422,91 @@ class Activity3 : AppCompatActivity() {
 
 Как показало тестирование, при попытке перейти на незарегестрированную Activity приложение вылетит.
 
+Затрачено времени ~ 2 часа.
+
 ### Задача 3. Навигация (флаги Intent/атрибуты Activity).
-Решим задачу №2, используя флаги Intent. Они позволяют указывать, стоит ли создавать новую Activity, или использовать ранее созданную.
+Теперь я решу задачу №2, используя флаги Intent. Они позволяют указывать на поведение вызываемого Activity.
+
+Принципиальной разнициы между Activity1_3.kt и Activity1.kt нет, поэтому перейдём сразу к рассмотрению Activity2_3.kt. В ней я поменял startActivityForResult() на startActivity(), поскольку больше нет необходимости отслеживать, куда дальше возвращаться из Activity3_3.
+
+Листинг Activity2_3.kt:
+```
+
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Button
+import androidx.core.view.GravityCompat
+import kotlinx.android.synthetic.main.activity_1.*
+import kotlinx.android.synthetic.main.activity_1.Drawer
+import kotlinx.android.synthetic.main.activity_1.button
+import kotlinx.android.synthetic.main.activity_1.button3
+import kotlinx.android.synthetic.main.activity_2.*
+
+class Activity2_3 : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_2)
+
+
+        button.setOnClickListener() {
+            finish()
+        }
+
+        button2.setOnClickListener() {
+            startActivity(Intent(applicationContext, Activity3_3::class.java))
+        }
+
+        button3.setOnClickListener() {
+            startActivity(Intent(applicationContext, ActivityAbout::class.java))
+            Drawer.closeDrawer(GravityCompat.START, true)
+        }
+    }
+
+}
+```
+
+В Activity3_3.kt я впервые использовал addFlags() - функцию, добаваляющую интересующие меня флаги к Intent'у. Флаг FLAG_ACTIVITY_CLEAR_TOP ищет, есть ли в backstack'е уже открытое Activity. Если да (как в этом случае), то оно будет открыто, и всё, что выше - закрыто. 
+
+Листинг Activity3_3.kt:
+```
+package com.example.lab3
+
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Button
+import androidx.core.view.GravityCompat
+import kotlinx.android.synthetic.main.activity_1.*
+import kotlinx.android.synthetic.main.activity_1.Drawer
+import kotlinx.android.synthetic.main.activity_1.button
+import kotlinx.android.synthetic.main.activity_1.button3
+import kotlinx.android.synthetic.main.activity_3.*
+
+class Activity3_3 : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_3)
+
+        button.setOnClickListener() {
+            startActivity(Intent(applicationContext, Activity1_3::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        }
+
+        button2.setOnClickListener() {
+            finish()
+        }
+
+        button3.setOnClickListener() {
+            startActivity(Intent(applicationContext, ActivityAbout::class.java))
+            Drawer.closeDrawer(GravityCompat.START, true)
+        }
+    }
+
+}
+```
+
+Иных изменений нет.
+
+Затрачено времени ~ 1 час.
+
+### Задача 4. Навигация (флаги Intent/атрибуты Activity).
