@@ -6,15 +6,15 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.core.view.GravityCompat
 import kotlinx.android.synthetic.main.activity_1.*
+import kotlinx.android.synthetic.main.activity_1.Drawer
+import kotlinx.android.synthetic.main.activity_1.button
+import kotlinx.android.synthetic.main.activity_1.button3
+import kotlinx.android.synthetic.main.activity_3.*
 
 class Activity3 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_3)
-
-        val button = findViewById<Button>(R.id.button)
-        val button2 = findViewById<Button>(R.id.button2)
-        val button3 = findViewById<Button>(R.id.button3)
 
         button.setOnClickListener() {
             setResult(0)

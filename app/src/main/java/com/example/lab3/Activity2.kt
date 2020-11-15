@@ -37,5 +37,4 @@ class Activity2 : AppCompatActivity() {
             finish()
     }
 
-
 }
