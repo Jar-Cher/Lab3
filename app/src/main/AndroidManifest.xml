@@ -57,6 +57,25 @@
             android:name=".ActivityAbout_4">
 
         </activity>
+        <activity android:name=".Activity1_5"
+            android:finishOnTaskLaunch="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activity2_5">
+
+        </activity>
+        <activity android:name=".Activity3_5"
+            android:noHistory="true">
+
+        </activity>
+        <activity
+            android:name=".ActivityAbout_5">
+
+        </activity>
     </application>
 
 </manifest>
