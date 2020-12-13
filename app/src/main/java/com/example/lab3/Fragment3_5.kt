@@ -28,10 +28,12 @@ class Fragment3_5 : Fragment() {
 
         view.button.setOnClickListener() {
             Navigation.findNavController(view).navigate(R.id.action_fragment3_5_to_fragment1_5)
+            Navigation.findNavController(view).popBackStack(R.id.fragment3_5, true)
         }
 
         view.button2.setOnClickListener() {
             Navigation.findNavController(view).navigate(R.id.action_fragment3_5_to_fragment2_5)
+            Navigation.findNavController(view).popBackStack(R.id.fragment3_5, true)
         }
 
         return view
