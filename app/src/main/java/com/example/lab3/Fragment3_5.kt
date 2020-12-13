@@ -27,13 +27,13 @@ class Fragment3_5 : Fragment() {
         val view = inflater.inflate(R.layout.fragment_3_5, container, false)
 
         view.button.setOnClickListener() {
-            Navigation.findNavController(view).navigate(R.id.action_fragment3_5_to_fragment1_5)
-            Navigation.findNavController(view).popBackStack(R.id.fragment3_5, true)
+            Navigation.findNavController(view).popBackStack()
+            Navigation.findNavController(view).navigate(R.id.fragment1_5)
         }
 
         view.button2.setOnClickListener() {
-            Navigation.findNavController(view).navigate(R.id.action_fragment3_5_to_fragment2_5)
-            Navigation.findNavController(view).popBackStack(R.id.fragment3_5, true)
+            Navigation.findNavController(view).popBackStack()
+            Navigation.findNavController(view).navigate(R.id.fragment2_5)
         }
 
         return view

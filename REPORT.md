@@ -427,7 +427,7 @@ class Activity3 : AppCompatActivity() {
 ### Задача 3. Навигация (флаги Intent/атрибуты Activity).
 Теперь я решу задачу №2, используя флаги Intent. Они позволяют указывать на поведение вызываемого Activity.
 
-Принципиальной разнициы между Activity1_3.kt и Activity1.kt нет, поэтому перейдём сразу к рассмотрению Activity2_3.kt. В ней я поменял startActivityForResult() на startActivity(), поскольку больше нет необходимости отслеживать, куда дальше возвращаться из Activity3_3.
+Принципиальной разнициы между Activity1_3.kt и Activity1.kt нет, поэтому перейдём сразу к рассмотрению Activity2_3.kt. В ней я поменял startActivityForResult() на startActivity(), поскольку больше нет необходимости отслеживать, куда дальше возвращаться из Activity3_3. Необходимую работу сделает FLAG_ACTIVITY_CLEAR_TOP.
 
 Листинг Activity2_3.kt:
 ```
@@ -560,3 +560,141 @@ button3.setOnClickListener() {
 
 ### Задача 5. Навигация (Fragments, Navigation Graph).
 Наконец, от меня требуется решить предыдущую задачу с помощью navigation graph. Все Activity должны быть заменены на фрагменты, кроме Activity 'About', которая должна остаться самостоятельной Activity.
+
+Таким образом, мне не только нужно использовать граф навигации (и фрагменты), но и обеспечить работу (или заменить на аналог) FLAG_ACTIVITY_NEW_DOCUMENT и атрибута Android:noHistory в новом решении.
+
+Мои эксперименты с FLAG_ACTIVITY_NEW_DOCUMENT не зависят напрямую от наличия или отсутствия фрагментов, однако, мне нужно определить, в каком именно режиме нужно открывать "About". Для этого нужно понять, какой фрагмент сейчас открыт, что достигается с помощью "Navigation.findNavController(this, R.id.nav_host_fragment).currentDestination!!.id".
+
+Основная Activity:
+```
+class Activity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_5)
+
+        button3.setOnClickListener() {
+
+            val currentFragment = Navigation.findNavController(this, R.id.nav_host_fragment).currentDestination!!.id
+
+            when {
+                currentFragment == R.id.fragment1_5 ->
+                    startActivity(Intent(this, ActivityAbout::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT))
+                currentFragment == R.id.fragment2_5 ->
+                    startActivity(Intent(this, ActivityAbout::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT or Intent.FLAG_ACTIVITY_MULTIPLE_TASK))
+                else ->
+                    startActivity(Intent(this, ActivityAbout::class.java))
+            }
+            Drawer.closeDrawer(GravityCompat.START, true)
+        }
+    }
+}
+```
+
+Фрагмент, первый "экран":
+```
+class Fragment1_5 : Fragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        val view = inflater.inflate(R.layout.fragment_1_5, container, false)
+
+        view.button.setOnClickListener() {
+            Navigation.findNavController(view).navigate(R.id.action_fragment1_5_to_fragment2_5)
+        }
+
+        view.button1.setOnClickListener() {
+            Navigation.findNavController(view).navigate(R.id.action_fragment1_5_to_fragment3_5)
+        }
+
+        return view
+    }
+
+}
+```
+
+Второй фрагмент аналогичен первому.
+Над третьей Activity в предыдущем задании я ставил опыты над Android:noHistory. К моему сожалению, прямого аналога для фрагментов нет. В данной ситуации я решил пойти другим путём и использовать функцию popBackStack():
+
+```
+class Fragment3_5 : Fragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        val view = inflater.inflate(R.layout.fragment_3_5, container, false)
+
+        view.button.setOnClickListener() {
+            Navigation.findNavController(view).popBackStack()
+            Navigation.findNavController(view).navigate(R.id.fragment1_5)
+        }
+
+        view.button2.setOnClickListener() {
+            Navigation.findNavController(view).popBackStack()
+            Navigation.findNavController(view).navigate(R.id.fragment2_5)
+        }
+
+        return view
+    }
+
+}
+```
+
+Граф навигации получился полносвязным:
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/fragment1_5">
+    <fragment
+        android:id="@+id/fragment1_5"
+        android:name="com.example.lab3.Fragment1_5"
+        android:label="Fragment1_5" >
+        <action
+            android:id="@+id/action_fragment1_5_to_fragment2_5"
+            app:destination="@id/fragment2_5" />
+        <action
+            android:id="@+id/action_fragment1_5_to_fragment3_5"
+            app:destination="@id/fragment3_5" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment2_5"
+        android:name="com.example.lab3.Fragment2_5"
+        android:label="Fragment2_5" >
+        <action
+            android:id="@+id/action_fragment2_5_to_fragment3_5"
+            app:destination="@id/fragment3_5" />
+        <action
+            android:id="@+id/action_fragment2_5_to_fragment1_5"
+            app:destination="@id/fragment1_5" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment3_5"
+        android:name="com.example.lab3.Fragment3_5"
+        android:label="Fragment3_5" >
+        <action
+            android:id="@+id/action_fragment3_5_to_fragment1_5"
+            app:destination="@id/fragment1_5" />
+        <action
+            android:id="@+id/action_fragment3_5_to_fragment2_5"
+            app:destination="@id/fragment2_5" />
+    </fragment>
+</navigation>
+```
+
+Затрачено времени ~ 4 часа.
+
+## Вывод:
+
+Я закрепил знания, полученные на лекциях, о работе с таким Lifecycle-Aware компонентами (компоненты, выполняющие действия в ответ на изменение стадии жизненного цикла LifecycleOwner'а), ViewModel (класс, позволяющий данным переживать смену конфигурации), LiveData (класс-хранилище данных, который можно безопасно наблюдать из LifecycleOwner'а).
+В задании 2 я познакомился с DrawerLayout - средством навигации по приложению, которое можно свернуть.
+Собсвенно навигацию по приложению я научился делать 3мя различными способами:
+* С помощью startActivityForResult() и startActivity().
+* С использованием флагов Intent, как, например, FLAG_ACTIVITY_CLEAR_TOP, и аттрибутов Activity.
+* С помощью графа навигации и фрагментов.
