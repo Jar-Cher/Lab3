@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/fragment1_5">
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.example.lab3.MainFragment"
-        android:label="MainFragment" />
+        android:id="@+id/fragment1_5"
+        android:name="com.example.lab3.Fragment1_5"
+        android:label="Fragment1_5" >
+        <action
+            android:id="@+id/action_fragment1_5_to_fragment2_5"
+            app:destination="@id/fragment2_5" />
+        <action
+            android:id="@+id/action_fragment1_5_to_fragment3_5"
+            app:destination="@id/fragment3_5" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment2_5"
+        android:name="com.example.lab3.Fragment2_5"
+        android:label="Fragment2_5" >
+        <action
+            android:id="@+id/action_fragment2_5_to_fragment3_5"
+            app:destination="@id/fragment3_5" />
+        <action
+            android:id="@+id/action_fragment2_5_to_fragment1_5"
+            app:destination="@id/fragment1_5" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment3_5"
+        android:name="com.example.lab3.Fragment3_5"
+        android:label="Fragment3_5" >
+        <action
+            android:id="@+id/action_fragment3_5_to_fragment1_5"
+            app:destination="@id/fragment1_5" />
+        <action
+            android:id="@+id/action_fragment3_5_to_fragment2_5"
+            app:destination="@id/fragment2_5" />
+    </fragment>
 </navigation>

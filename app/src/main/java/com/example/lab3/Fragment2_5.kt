@@ -15,20 +15,23 @@ import kotlinx.android.synthetic.main.activity_1.Drawer
 import kotlinx.android.synthetic.main.activity_1.button
 import kotlinx.android.synthetic.main.activity_1.button3
 import kotlinx.android.synthetic.main.activity_2.*
+import kotlinx.android.synthetic.main.fragment_2_5.view.*
 
-class Activity2_5 : Fragment() {
+class Fragment2_5 : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        val view = inflater.inflate(R.layout.fragment_2_5, container, false)
 
-        button.setOnClickListener() {
-            Navigation.findNavController(requireView()).navigate()
+        view.button.setOnClickListener() {
+            Navigation.findNavController(view).navigate(R.id.action_fragment2_5_to_fragment1_5)
         }
 
-        button2.setOnClickListener() {
-            Navigation.findNavController(requireView()).navigate()
+        view.button2.setOnClickListener() {
+            Navigation.findNavController(view).navigate(R.id.action_fragment2_5_to_fragment3_5)
         }
 
         return view
