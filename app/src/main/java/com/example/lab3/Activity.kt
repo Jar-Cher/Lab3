@@ -24,14 +24,16 @@ class Activity : AppCompatActivity() {
 
             val currentFragment = Navigation.findNavController(this, R.id.nav_host_fragment).currentDestination!!.id
 
-            when {
+            // Changes for the sake of Lab5
+            startActivity(Intent(this, ActivityAbout::class.java))
+            /*when {
                 currentFragment == R.id.fragment1_5 ->
                     startActivity(Intent(this, ActivityAbout::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT))
                 currentFragment == R.id.fragment2_5 ->
                     startActivity(Intent(this, ActivityAbout::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT or Intent.FLAG_ACTIVITY_MULTIPLE_TASK))
                 else ->
                     startActivity(Intent(this, ActivityAbout::class.java))
-            }
+            }*/
             Drawer.closeDrawer(GravityCompat.START, true)
         }
     }

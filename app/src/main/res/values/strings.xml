@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Lab3</string>
-    <string name="someText">Some text, lots of it. Some text, lots of it. Some text, lots of it. Some text, lots of it. Some text, lots of it. Some text, lots of it. Some text, lots of it. Some text, lots of it. Some text, lots of it. Some text, lots of it. Some text, lots of it. Some text, lots of it. Some text, lots of it. Some text, lots of it. Some text, lots of it.</string>
+    <string name="someText">Some text, lots of it. Some text, lots of it. Some text, lots of it.</string>
 </resources>
